@@ -1,15 +1,22 @@
 {
   "name": "@dev-force/nestjs-data-generic",
   "version": "0.0.2",
-  "description": "",
-  "author": "",
+  "description": "NestJS Data Generic Package",
+  "author": "leodSWLP",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && npx tsc --build --clean && tsc",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "deploy": "npm publish dev-force-nestjs-data-generic-*.tgz --registry=https://npm.pkg.github.com/"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leodSWLP/dev-force-nestjs-data-generic.git"
   },
   "peerDependencies": {
     "@nestjs/common": "^11.0.1",
