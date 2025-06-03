@@ -55,14 +55,14 @@ build-and-deploy:
         scope: '@dev-force'
 
     - name: Install dependencies
-        run: npm install
+      run: npm install
 
     - name: Build project
       run: npm run build
 
     - name: Pack package
       run: npm pack
-    
+
     - name: Publish to GitHub Packages
       run: npm publish
       env:
