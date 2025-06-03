@@ -35,58 +35,58 @@ jobs:
       - name: Run tests
         run: npm test
 
-build-and-deploy:
-  runs-on: ubuntu-latest
-  environment: release
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: release
 
-  needs: validate
-  permissions:
-    contents: write
-    packages: write
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    needs: validate
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        registry-url: 'https://npm.pkg.github.com'
-        scope: '@dev-force'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@dev-force'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build project
-      run: npm run build
+      - name: Build project
+        run: npm run build
 
-    - name: Pack package
-      run: npm pack
+      - name: Pack package
+        run: npm pack
 
-    - name: Publish to GitHub Packages
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPMRC_TOKEN }}
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMRC_TOKEN }}
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.NPMRC_TOKEN }}
-      with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
-        body: |
-          Automated release for ${{ github.ref_name }}.
-          - Package: @dev-force/nestjs-data-generic@${{ github.ref_name }}
-          - Published to GitHub Packages
-        draft: false
-        prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') }}
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.NPMRC_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            Automated release for ${{ github.ref_name }}.
+            - Package: @dev-force/nestjs-data-generic@${{ github.ref_name }}
+            - Published to GitHub Packages
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') }}
 
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dev-force-nestjs-data-generic-${{ github.ref_name }}.tgz
-        asset_name: nestjs-data-generic-${{ github.ref_name }}.tgz
-        asset_content_type: application/tgz
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dev-force-nestjs-data-generic-${{ github.ref_name }}.tgz
+          asset_name: nestjs-data-generic-${{ github.ref_name }}.tgz
+          asset_content_type: application/tgz
