@@ -8,9 +8,6 @@ export class TransactionMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private connection: Connection) {}
 
   use(req: any, res: any, next: () => void) {
-    TransactionLocalStore.initAsyncLocalStore(() => {
-      TransactionLocalStore.setConnection(this.connection);
-      next();
-    });
+    TransactionLocalStore.initAsyncLocalStore(this.connection, next);
   }
 }

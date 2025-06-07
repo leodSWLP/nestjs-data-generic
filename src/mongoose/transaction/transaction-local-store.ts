@@ -9,8 +9,11 @@ export class TransactionStore {
 export class TransactionLocalStore {
   public static asyncLocalStore = new AsyncLocalStorage<TransactionStore>();
 
-  static initAsyncLocalStore(initSetValueFn: () => void) {
-    this.asyncLocalStore.run(new TransactionStore(), initSetValueFn);
+  static initAsyncLocalStore(connection: Connection, run: () => any) {
+    this.asyncLocalStore.run(new TransactionStore(), () => {
+      TransactionLocalStore.setConnection(connection);
+      run();
+    });
   }
 
   private static getStore(): TransactionStore {

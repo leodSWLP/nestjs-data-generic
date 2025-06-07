@@ -31,7 +31,6 @@ export function Transactional() {
         await newSession.withTransaction(async () => {
           result = await originalMethod.apply(this, args);
         });
-        await TransactionLocalStore.commitTransactionIfExist();
         console.debug(`Transaction committed for ${propertyKey}`);
         return result;
       } catch (error) {

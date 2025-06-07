@@ -4,9 +4,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { BaseModel } from './dto/base-model';
-import { Document, FilterQuery, Model, SortOrder, UpdateQuery } from 'mongoose';
+import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 import { TransactionLocalStore } from './transaction/transaction-local-store';
 import { plainToInstance } from 'class-transformer';
+import { ListOptions } from './dto/list.options';
 
 @Injectable()
 export abstract class BaseModelRepository<T extends BaseModel & Document> {
@@ -98,14 +99,7 @@ export abstract class BaseModelRepository<T extends BaseModel & Document> {
     return document;
   }
 
-  async list(
-    query: FilterQuery<T>,
-    listOptions?: {
-      offset?: number;
-      size?: number;
-      sort?: { [key: string]: SortOrder };
-    },
-  ): Promise<T[]> {
+  async list(query: FilterQuery<T>, listOptions?: ListOptions): Promise<T[]> {
     this.logger.debug(`list(): Enter`);
     this.logger.debug(`list(): query = ${JSON.stringify(query)}`);
     this.logger.debug(`list(): listOptions = ${JSON.stringify(listOptions)}`);
