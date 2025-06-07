@@ -1,6 +1,6 @@
 {
   "name": "@leodSWLP/nestjs-data-generic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NestJS Data Generic Package",
   "author": "leodSWLP",
   "main": "dist/index.js",
